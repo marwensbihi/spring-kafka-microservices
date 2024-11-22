@@ -1,0 +1,7 @@
+domain/Order$OrderBuilder.class
+domain/OrderSource.class
+domain/OrderStatus.class
+domain/Topics.class
+domain/Order.class
+domain/KafkaIds.class
+domain/KafkaGroupIds.class

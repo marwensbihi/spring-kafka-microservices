@@ -1,0 +1,8 @@
+com/zatribune/spring/ecommerce/stock/db/entities/Product.class
+com/zatribune/spring/ecommerce/stock/db/DevBootstrap.class
+com/zatribune/spring/ecommerce/stock/listener/OrderListener.class
+com/zatribune/spring/ecommerce/stock/db/repository/ProductRepository.class
+com/zatribune/spring/ecommerce/stock/db/entities/Product$ProductBuilder.class
+com/zatribune/spring/ecommerce/stock/service/OrderService.class
+com/zatribune/spring/ecommerce/stock/service/OrderServiceImpl.class
+com/zatribune/spring/ecommerce/stock/StockApplication.class
