@@ -13,11 +13,11 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @Entity
 @Table(name = "banque")
-public class Order {
+public class Banque {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "compteID")
+    @Column(name = "compte_id")
     private Long compteID;
 
     @Column(name = "solde_initial", nullable = false)
@@ -26,4 +26,7 @@ public class Order {
     @Column(name = "solde_actuel", nullable = false)
     private Double soldeActuel;
 
+    @OneToOne
+    @JoinColumn(name = "compte_id")
+    private Company company;
 }

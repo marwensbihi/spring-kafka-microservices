@@ -18,11 +18,12 @@ public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "client_id")
     private Long clientID;
 
     @Column(nullable = false)
     @Size(min = 2, max = 50, message = "The name must be between 2 and 50 characters.")
-    private String nom;
+    private String name;
 
     @Column
     private String adresse;
@@ -45,4 +46,5 @@ public class Client {
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Projet> projets;
+
 }

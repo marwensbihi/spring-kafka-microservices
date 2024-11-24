@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 
 @Data
@@ -43,4 +44,6 @@ public class FactureAchat {
             inverseJoinColumns = @JoinColumn(name = "productID")
     )
     private List<Product> products;
+    @OneToMany(mappedBy = "facturesachat")
+    private Set<Transaction> transactions;
 }

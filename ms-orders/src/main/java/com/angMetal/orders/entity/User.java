@@ -55,6 +55,9 @@ public class User {
     @CreationTimestamp
     private Instant createdAt;
 
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",

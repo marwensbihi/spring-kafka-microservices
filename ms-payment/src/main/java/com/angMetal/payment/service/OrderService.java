@@ -1,4 +1,4 @@
-package com.angMetal.payments.service;
+package com.angMetal.payment.service;
 
 public interface OrderService {
 

@@ -1,6 +1,7 @@
-package com.angMetal.payments.service;
+package com.angMetal.payment.service;
 
-import com.angMetal.payments.Repository.TransactionRepository;
+import com.angMetal.payment.Repository.TransactionRepository;
+import com.angMetal.payment.Repository.PaymentRepository;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import models.Order;
@@ -17,14 +18,15 @@ public class PaymentConsumerService {
 
 
     private final TransactionRepository transactionRepository;
-    private final PaymentRepository transactionRepository;
+    private final PaymentRepository paymentRepository;
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @Value("${kafka.topic.payment-ack}")
     private String paymentAckTopic;
 
-    public PaymentConsumerService(TransactionRepository transactionRepository, KafkaTemplate<String, Object> kafkaTemplate) {
+    public PaymentConsumerService(TransactionRepository transactionRepository, PaymentRepository paymentRepository, KafkaTemplate<String, Object> kafkaTemplate) {
         this.transactionRepository = transactionRepository;
+        this.paymentRepository = paymentRepository;
         this.kafkaTemplate = kafkaTemplate;
     }
 

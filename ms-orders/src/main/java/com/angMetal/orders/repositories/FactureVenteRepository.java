@@ -1,4 +1,7 @@
 package com.angMetal.orders.repositories;
 
-public interface FactureVenteRepository {
+import com.angMetal.orders.entity.FactureVente;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface FactureVenteRepository extends JpaRepository<FactureVente, Long> {
 }

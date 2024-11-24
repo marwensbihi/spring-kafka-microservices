@@ -15,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Facture")
+@Table(name = "Facture_vente")
 public class FactureVente {
 
     @Id
@@ -53,6 +53,6 @@ public class FactureVente {
     )
     private List<Product> products;
 
-    @OneToMany(mappedBy = "facture")
+    @OneToMany(mappedBy = "Facturevente")
     private Set<Transaction> transactions;
 }

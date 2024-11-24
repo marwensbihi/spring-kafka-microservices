@@ -1,4 +1,4 @@
-package com.angMetal.payments;
+package com.angMetal.payment;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

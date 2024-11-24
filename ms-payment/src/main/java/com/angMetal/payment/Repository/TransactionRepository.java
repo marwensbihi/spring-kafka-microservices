@@ -1,6 +1,6 @@
-package com.angMetal.payments.Repository;
+package com.angMetal.payment.Repository;
 
-import models.Transaction;
+import com.angMetal.payment.entity.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {

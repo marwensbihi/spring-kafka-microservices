@@ -43,4 +43,9 @@ public class Projet {
 
     @OneToMany(mappedBy = "projet", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Report> reports;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id") // Foreign key in the "projet" table
+    private Company company;
+
 }

@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.List;
+
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,8 +32,6 @@ public class Fournisseur {
     private String numeroTel;
 
     @OneToMany(mappedBy = "fournisseur", cascade = CascadeType.ALL, orphanRemoval = false)
-    private List<Deponse> deponses;
-
-    @OneToMany(mappedBy = "fournisseur", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<FactureAchat> factureAchats;
+
 }

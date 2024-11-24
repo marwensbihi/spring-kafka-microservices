@@ -2,10 +2,6 @@ package com.zatribune.spring.ecommerce.stock.service;
 
 import com.zatribune.spring.ecommerce.stock.db.entities.Product;
 import com.zatribune.spring.ecommerce.stock.db.repository.ProductRepository;
-import domain.OrderSource;
-import domain.OrderStatus;
-import domain.Topics;
-import domain.Order;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -15,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderServiceImpl implements OrderService{
 
-    private static final OrderSource SOURCE = OrderSource.STOCK;
+    private static final PaymentSource SOURCE = PaymentSource.STOCK;
     private final ProductRepository repository;
     private final KafkaTemplate<Long, Order> template;
 

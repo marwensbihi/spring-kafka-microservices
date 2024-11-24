@@ -1,10 +1,10 @@
-package com.angMetal.payments.listener;
+package com.angMetal.payment.listener;
 
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.angMetal.payments.service.OrderService;
+import com.angMetal.payment.service.OrderService;
 
 @Slf4j
 @Component

@@ -1,7 +1,5 @@
 package com.zatribune.spring.ecommerce.validator.service;
 
-import domain.Order;
-import domain.OrderStatus;
 import org.springframework.stereotype.Service;
 
 @Service

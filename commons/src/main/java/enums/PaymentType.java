@@ -1,4 +1,6 @@
 package enums;
 
-public class PaymentType {
+public enum PaymentType {
+    CREDIT,
+    DEBIT
 }

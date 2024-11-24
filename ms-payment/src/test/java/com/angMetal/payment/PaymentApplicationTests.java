@@ -1,4 +1,4 @@
-package com.angMetal.payments;
+package com.angMetal.payment;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -6,8 +6,8 @@ spring:
       ddl-auto: create-drop
     show-sql: true
   datasource:
-    url: jdbc:mysql://127.0.0.1:33066/commerce
-    username: root
+    url: jdbc:postgresql://127.0.0.1:5432/angMetal
+    username: postgres
     password: 1234
 
 spring.kafka:

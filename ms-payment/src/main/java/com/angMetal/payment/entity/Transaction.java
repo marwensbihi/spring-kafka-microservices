@@ -1,4 +1,4 @@
-package models;
+package com.angMetal.payment.entity;
 
 
 import javax.persistence.*;
@@ -34,8 +34,6 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     @Column(name = "type_de_transaction", nullable = false)
     private PaymentType typeDeTransaction;
-
-
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "facture_id") // Adjust the column name as per your schema

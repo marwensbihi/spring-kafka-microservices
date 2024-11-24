@@ -1,7 +1,5 @@
 package com.zatribune.spring.ecommerce.validator.listener;
 
-import domain.Order;
-import domain.Topics;
 import com.zatribune.spring.ecommerce.validator.service.OrderValidatorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
