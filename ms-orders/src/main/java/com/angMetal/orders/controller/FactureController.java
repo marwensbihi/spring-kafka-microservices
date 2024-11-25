@@ -4,7 +4,7 @@ import models.FactureEvent;
 import com.angMetal.orders.entity.FactureAchat;
 import com.angMetal.orders.entity.FactureVente;
 import com.angMetal.orders.service.FactureService;
-import com.angMetal.orders.kafka.KafkaProducerService;
+import com.angMetal.orders.service.KafkaProducerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,11 +31,9 @@ public class FactureController {
         // Create FactureEvent for Kafka message
         FactureEvent factureEvent = FactureEvent.builder()
                 .factureId(savedFacture.getFactureID())
-                .customerId(savedFacture.getClient().getId())
+                .customerId(savedFacture.getClient().getClientID())
                 .type("VENTE")
                 .amount(savedFacture.getMontantTotal())
-                .status(savedFacture.getStatut().name())
-                .action("CREATE")
                 .build();
 
         // Send message to Kafka
@@ -52,16 +50,14 @@ public class FactureController {
     @PostMapping("/achat")
     public FactureAchat createFactureAchat(@RequestBody @Valid FactureAchat factureAchat) {
         // Save factureAchat in database
-        FactureAchat savedFacture = factureService.createFactureAchat(factureAchat);
+        FactureAchat savedFacture = factureService.createAchatFacture(factureAchat);
 
         // Create FactureEvent for Kafka message
         FactureEvent factureEvent = FactureEvent.builder()
                 .factureId(savedFacture.getBillID())
-                .customerId(savedFacture.getFournisseur().getId())
+                .customerId(savedFacture.getFournisseur().getFournisseurID())
                 .type("ACHAT")
                 .amount(savedFacture.getMontantTotal())
-                .status("PENDING")
-                .action("CREATE")
                 .build();
 
         // Send message to Kafka

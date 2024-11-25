@@ -1,46 +1,36 @@
 package com.angMetal.payment.service;
 
 import com.angMetal.payment.Repository.TransactionRepository;
-import com.angMetal.payment.Repository.PaymentRepository;
-import lombok.Value;
+import com.angMetal.payment.entity.Transaction;
 import lombok.extern.slf4j.Slf4j;
 import models.Order;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 
 
-
-@Slf4j
 @Service
+@Slf4j
 public class PaymentConsumerService {
 
-
     private final TransactionRepository transactionRepository;
-    private final PaymentRepository paymentRepository;
-    private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    @Value("${kafka.topic.payment-ack}")
-    private String paymentAckTopic;
-
-    public PaymentConsumerService(TransactionRepository transactionRepository, PaymentRepository paymentRepository, KafkaTemplate<String, Object> kafkaTemplate) {
+    public PaymentConsumerService(TransactionRepository transactionRepository) {
         this.transactionRepository = transactionRepository;
-        this.paymentRepository = paymentRepository;
-        this.kafkaTemplate = kafkaTemplate;
     }
 
     @KafkaListener(topics = "payment", groupId = "payment-group")
-    public void consumePaymentOrder(Order order) {
+    public void consumePayment(Order order) {
         // Save transaction
         Transaction transaction = new Transaction();
-        transaction.setOrderId(order.getId());
-        transaction.setCustomerId(order.getCustomerId());
-        transaction.setAmount(order.getPrice());
-        transaction.setPaymentStatus("SUCCESS");
+        transaction.setMontant((double) order.getPrice());
+        transaction.setDateTransaction(new Date());
+        transaction.setTypeDeTransaction(order.getType());
+        transaction.setFactureVenteId(order.getFactureVenteId());
+        transaction.setFactureAchatId(order.getFactureAchatId());
         transactionRepository.save(transaction);
 
-        // Send acknowledgment to the order service
-        kafkaTemplate.send(paymentAckTopic, transaction);
+        log.info("Transaction saved successfully for Order ID: {}", order.getId());
     }
 }

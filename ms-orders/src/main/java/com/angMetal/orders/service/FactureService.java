@@ -27,7 +27,7 @@ public class FactureService {
      * @return The created vente facture.
      */
     @Transactional
-    public FactureVente createVenteFacture(FactureVente factureVente) {
+    public FactureVente createFactureVente(FactureVente factureVente) {
         FactureVente savedFactureVente = factureVenteRepository.save(factureVente);
 
         // Create FactureEvent for vente facture
@@ -70,12 +70,12 @@ public class FactureService {
         if (factureType == FactureType.VENTE) {
             FactureVente venteFacture = (FactureVente) facture;
             factureEvent.setFactureId(venteFacture.getFactureID());
-            factureEvent.setMontantTotal(venteFacture.getMontantTotal());
-            factureEvent.setClientId(venteFacture.getClient().getClientId());
+            factureEvent.setAmount(venteFacture.getMontantTotal());
+            factureEvent.setCustomerId(venteFacture.getClient().getClientID());
         } else if (factureType == FactureType.ACHAT) {
             FactureAchat achatFacture = (FactureAchat) facture;
             factureEvent.setFactureId(achatFacture.getBillID());
-            factureEvent.setMontantTotal(achatFacture.getMontantTotal());
+            factureEvent.setAmount(achatFacture.getMontantTotal());
             factureEvent.setFournisseurId(achatFacture.getFournisseur().getFournisseurID());
         }
 

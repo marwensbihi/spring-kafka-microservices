@@ -53,6 +53,6 @@ public class FactureVente {
     )
     private List<Product> products;
 
-    @OneToMany(mappedBy = "Facturevente")
-    private Set<Transaction> transactions;
+  //  @OneToMany(mappedBy = "Facturevente")
+   // private Set<Transaction> transactions;
 }

@@ -35,12 +35,10 @@ public class Transaction {
     @Column(name = "type_de_transaction", nullable = false)
     private PaymentType typeDeTransaction;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "facture_id") // Adjust the column name as per your schema
-    private FactureVente facturevente;
+    @Column(name = "facture_vente_id", nullable = true)
+    private Long factureVenteId; // Stores ID of FactureVente
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "billID") // Adjust the column name as per your schema
-    private FactureAchat factureachat;
+    @Column(name = "facture_achat_id", nullable = true)
+    private Long factureAchatId; // Stores ID of FactureAchat
 
 }

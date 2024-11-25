@@ -44,6 +44,6 @@ public class FactureAchat {
             inverseJoinColumns = @JoinColumn(name = "productID")
     )
     private List<Product> products;
-    @OneToMany(mappedBy = "facturesachat")
-    private Set<Transaction> transactions;
+   // @OneToMany(mappedBy = "facturesachat")
+   // private Set<Transaction> transactions;
 }

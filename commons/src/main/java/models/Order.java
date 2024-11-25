@@ -16,10 +16,13 @@ public class Order {
     private int price;             // Total price of the order
     private PaymentType type;      // Type of payment (e.g., CREDIT, DEBIT)
     private PaymentSource source;  // Source of payment (e.g., ONLINE, IN-STORE)
+    private Long factureVenteId;   // ID of the associated FactureVente
+    private Long factureAchatId;   // ID of the associated FactureAchat
 
     @Override
     public String toString() {
-        return String.format("Order[id=%d, customerId=%d, productId=%d, productCount=%d, price=%d, type=%s, source=%s]",
-                id, customerId, productId, productCount, price, type, source);
+        return String.format(
+                "Order[id=%d, customerId=%d, productId=%d, productCount=%d, price=%d, type=%s, source=%s, factureVenteId=%d, factureAchatId=%d]",
+                id, customerId, productId, productCount, price, type, source, factureVenteId, factureAchatId);
     }
 }
