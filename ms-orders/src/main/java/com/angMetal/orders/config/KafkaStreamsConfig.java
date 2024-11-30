@@ -8,6 +8,8 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.StreamsConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
 
 import java.util.Properties;
 
@@ -29,16 +31,6 @@ public class KafkaStreamsConfig {
         return stream;
     }
 
-    @Bean
-    public KafkaStreams kafkaStreams(StreamsBuilder streamsBuilder) {
-        // Kafka Streams configuration properties
-        Properties properties = new Properties();
-        properties.put(StreamsConfig.APPLICATION_ID_CONFIG, "facture-streams-app");
-        properties.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 
-        // Create and start KafkaStreams instance
-        KafkaStreams kafkaStreams = new KafkaStreams(streamsBuilder.build(), properties);
-        kafkaStreams.start();
-        return kafkaStreams;
-    }
+
 }

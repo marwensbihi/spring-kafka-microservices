@@ -1,4 +1,4 @@
-package com.zatribune.spring.ecommerce.stock;
+package com.angMetal.stock;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

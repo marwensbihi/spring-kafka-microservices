@@ -5,3 +5,4 @@
 /media/marwen/shared3/wael-adem/spring-kafka-microservices/ms-payment/src/main/java/com/angMetal/payment/Repository/TransactionRepository.java
 /media/marwen/shared3/wael-adem/spring-kafka-microservices/ms-payment/src/main/java/com/angMetal/payment/service/PaymentConsumerService.java
 /media/marwen/shared3/wael-adem/spring-kafka-microservices/ms-payment/src/main/java/com/angMetal/payment/entity/Payment.java
+/media/marwen/shared3/wael-adem/spring-kafka-microservices/ms-payment/src/main/java/com/angMetal/payment/config/KafkaConfig.java

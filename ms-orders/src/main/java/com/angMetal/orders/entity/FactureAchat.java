@@ -46,4 +46,6 @@ public class FactureAchat {
     private List<Product> products;
    // @OneToMany(mappedBy = "facturesachat")
    // private Set<Transaction> transactions;
+
+
 }

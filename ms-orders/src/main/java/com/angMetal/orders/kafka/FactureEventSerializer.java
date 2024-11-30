@@ -13,26 +13,27 @@ public class FactureEventSerializer implements Serializer<FactureEvent> {
 
     @Override
     public void configure(Map<String, ?> configs, boolean isKey) {
-        // Configuration logic, if needed
+        // Configuration logic if needed, for example, reading configs for objectMapper
     }
 
     @Override
     public byte[] serialize(String topic, FactureEvent data) {
+        if (data == null) {
+            System.err.println("Cannot serialize null data for topic: " + topic);  // Log for debugging
+            return new byte[0];  // Return an empty array instead of null (Kafka expects non-null value)
+        }
         try {
-            if (data == null) {
-                return null;
-            }
             // Convert FactureEvent to JSON and then to byte array
             return objectMapper.writeValueAsBytes(data);
         } catch (JsonProcessingException e) {
-            // Handle serialization exception
+            System.err.println("Error serializing FactureEvent for topic: " + topic);
             e.printStackTrace();
-            return null;
+            throw new RuntimeException("Error serializing FactureEvent", e); // Rethrow as unchecked exception
         }
     }
 
     @Override
     public void close() {
-        // Any cleanup logic, if needed
+        // No resource to clean up for this case, but this is where you'd release resources if needed
     }
 }

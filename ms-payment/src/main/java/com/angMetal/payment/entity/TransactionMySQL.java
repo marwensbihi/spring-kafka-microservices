@@ -3,8 +3,6 @@ package com.angMetal.payment.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,8 +13,7 @@ import enums.PaymentType;
 @AllArgsConstructor
 @Entity
 @Table(name = "transaction")
-@Document(indexName = "transaction_index")
-public class Transaction {
+public class TransactionMySQL {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,9 +31,9 @@ public class Transaction {
     @Column(name = "type_de_transaction", nullable = false)
     private PaymentType typeDeTransaction;
 
-    @Column(name = "facture_vente_id", nullable = false)
-    private Long factureVenteId;
+    @Column(name = "facture_vente_id", nullable = true)
+    private Long factureVenteId; // Stores ID of FactureVente
 
-    @Column(name = "facture_achat_id", nullable = false)
-    private Long factureAchatId;
+    @Column(name = "facture_achat_id", nullable = true)
+    private Long factureAchatId; // Stores ID of FactureAchat
 }

@@ -1,7 +1,0 @@
-com/angMetal/payment/Repository/PaymentRepository.class
-com/angMetal/payment/service/PaymentConsumerService.class
-com/angMetal/payment/Repository/TransactionRepository.class
-com/angMetal/payment/entity/Transaction.class
-com/angMetal/payment/entity/Payment.class
-com/angMetal/payment/service/FactureService.class
-com/angMetal/payment/PaymentApplication.class

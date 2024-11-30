@@ -11,36 +11,35 @@ public class FactureProducer {
 
     private final KafkaTemplate<String, FactureEvent> kafkaTemplate;
 
-    private static final String VENTE_TOPIC = "facture-vente-topic";
-    private static final String ACHAT_TOPIC = "facture-achat-topic";
+    private static final String FACTURE_EVENTS = "facture-events";
+    private static final String STOCK_TOPIC = "stock-events";
 
     /**
      * Send FactureEvent to Kafka topic based on the type of facture (VENTE or ACHAT).
      * @param factureEvent The facture event containing facture details.
      */
     public void sendFactureEvent(FactureEvent factureEvent) {
-        String topic = getTopicForFactureType(factureEvent.getType());
-
-        // Send FactureEvent to the appropriate Kafka topic
-        kafkaTemplate.send(topic, factureEvent)
+        // Send FactureEvent to the facture-events Kafka topic
+        kafkaTemplate.send(FACTURE_EVENTS, factureEvent)
                 .addCallback(
-                        result -> System.out.println("Facture event sent successfully to topic: " + topic),
-                        ex -> System.err.println("Error sending facture event to topic: " + topic)
+                        result -> System.out.println("Facture event sent successfully to topic: " + FACTURE_EVENTS),
+                        ex -> System.err.println("Error sending facture event to topic: " + FACTURE_EVENTS)
                 );
+
+        // Now, send the same FactureEvent to the stock-events Kafka topic for stock update
+        sendStockEvent(factureEvent);
     }
 
     /**
-     * Get the Kafka topic based on the facture type.
-     * @param factureType The type of facture (VENTE or ACHAT).
-     * @return The appropriate Kafka topic name.
+     * Send the FactureEvent to the stock-events Kafka topic to update the stock.
+     * @param factureEvent The facture event containing stock update information.
      */
-    private String getTopicForFactureType(String factureType) {
-        if ("VENTE".equalsIgnoreCase(factureType)) {
-            return VENTE_TOPIC;
-        } else if ("ACHAT".equalsIgnoreCase(factureType)) {
-            return ACHAT_TOPIC;
-        } else {
-            throw new IllegalArgumentException("Invalid facture type: " + factureType);
-        }
+    private void sendStockEvent(FactureEvent factureEvent) {
+        // Send FactureEvent to the stock-events topic (no need for transformation)
+        kafkaTemplate.send(STOCK_TOPIC, factureEvent)
+                .addCallback(
+                        result -> System.out.println("Stock event sent successfully to topic: " + STOCK_TOPIC),
+                        ex -> System.err.println("Error sending stock event to topic: " + STOCK_TOPIC)
+                );
     }
 }

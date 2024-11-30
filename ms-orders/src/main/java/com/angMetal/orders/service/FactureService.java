@@ -2,15 +2,18 @@ package com.angMetal.orders.service;
 
 import com.angMetal.orders.entity.FactureAchat;
 import com.angMetal.orders.entity.FactureVente;
+import com.angMetal.orders.entity.Product;
 import com.angMetal.orders.kafka.FactureProducer;
 import com.angMetal.orders.repositories.FactureAchatRepository;
 import com.angMetal.orders.repositories.FactureVenteRepository;
+import com.angMetal.orders.repositories.ProductRepository;
 import models.FactureEvent;
 import com.angMetal.orders.enums.FactureType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,6 +23,7 @@ public class FactureService {
     private final FactureProducer factureProducer;
     private final FactureVenteRepository factureVenteRepository;
     private final FactureAchatRepository factureAchatRepository;
+    private final ProductRepository productRepository;
 
     /**
      * Create a new vente facture and send the corresponding event to Kafka.
@@ -29,6 +33,9 @@ public class FactureService {
     @Transactional
     public FactureVente createFactureVente(FactureVente factureVente) {
         FactureVente savedFactureVente = factureVenteRepository.save(factureVente);
+
+        // Update product stock after sale
+        updateProductStock(factureVente.getProducts(), FactureType.VENTE);
 
         // Create FactureEvent for vente facture
         FactureEvent factureEvent = buildFactureEvent(savedFactureVente, FactureType.VENTE);
@@ -48,6 +55,9 @@ public class FactureService {
     public FactureAchat createAchatFacture(FactureAchat factureAchat) {
         FactureAchat savedFactureAchat = factureAchatRepository.save(factureAchat);
 
+        // Update product stock after purchase
+        updateProductStock(factureAchat.getProducts(), FactureType.ACHAT);
+
         // Create FactureEvent for achat facture
         FactureEvent factureEvent = buildFactureEvent(savedFactureAchat, FactureType.ACHAT);
 
@@ -55,6 +65,29 @@ public class FactureService {
         factureProducer.sendFactureEvent(factureEvent);
 
         return savedFactureAchat;
+    }
+
+    /**
+     * Update product stock based on facture type (VENTE or ACHAT).
+     * @param products The list of products involved in the facture.
+     * @param factureType The type of facture (VENTE or ACHAT).
+     */
+    private void updateProductStock(List<Product> products, FactureType factureType) {
+        for (Product product : products) {
+            Optional<Product> productOptional = productRepository.findById(product.getProductID());
+            if (productOptional.isPresent()) {
+                Product existingProduct = productOptional.get();
+                if (factureType == FactureType.VENTE) {
+                    // Decrease stock for vente
+                    existingProduct.setQuantiteEnStock(existingProduct.getQuantiteEnStock() - product.getQuantiteEnStock());
+                } else if (factureType == FactureType.ACHAT) {
+                    // Increase stock for achat
+                    existingProduct.setQuantiteEnStock(existingProduct.getQuantiteEnStock() + product.getQuantiteEnStock());
+                }
+                // Save the updated product
+                productRepository.save(existingProduct);
+            }
+        }
     }
 
     /**

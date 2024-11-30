@@ -18,7 +18,6 @@
         <module>ms-orders</module>
         <module>ms-payment</module>
         <module>ms-stock</module>
-        <module>ms-validator</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

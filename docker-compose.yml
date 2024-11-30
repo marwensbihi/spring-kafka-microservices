@@ -1,6 +1,6 @@
 
-version: '2'
 services:
+
   zookeeper-1:
     container_name: ecommerce-zookeeper-1
     image: confluentinc/cp-zookeeper:latest
@@ -9,6 +9,8 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - 22181:2181
+    networks:
+      - ecommerce-net
 
   zookeeper-2:
     container_name: ecommerce-zookeeper-2
@@ -18,6 +20,19 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - 32181:2181
+    networks:
+      - ecommerce-net
+
+  zookeeper-3:
+    container_name: ecommerce-zookeeper-3
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 42181:2181
+    networks:
+      - ecommerce-net
 
   kafka-1:
     container_name: ecommerce-kafka-1
@@ -25,42 +40,111 @@ services:
     depends_on:
       - zookeeper-1
       - zookeeper-2
-
+      - zookeeper-3
     ports:
       - 29092:29092
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper-1:2181,zookeeper-2:2181
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper-1:2181,zookeeper-2:2181,zookeeper-3:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-1:9092,PLAINTEXT_HOST://localhost:29092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+    networks:
+      - ecommerce-net
+
   kafka-2:
     container_name: ecommerce-kafka-2
     image: confluentinc/cp-kafka:latest
     depends_on:
       - zookeeper-1
       - zookeeper-2
+      - zookeeper-3
     ports:
       - 39092:39092
     environment:
       KAFKA_BROKER_ID: 2
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper-1:2181,zookeeper-2:2181
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper-1:2181,zookeeper-2:2181,zookeeper-3:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-2:9092,PLAINTEXT_HOST://localhost:39092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-
-  mysql:
-    container_name: ecommerce-mysql
-    image: mysql:latest
-    volumes:
-      - "./.mysql-data/db:/var/lib/mysql"
-    restart: always
-    ports:
-      - 3306:3306
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+    networks:
+      - ecommerce-net
+  # Elasticsearch Service
+  elasticsearch:
+    container_name: ecommerce-elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.1
     environment:
-      MYSQL_ROOT_PASSWORD: 1234
-      MYSQL_DATABASE: angMetal
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: 1234
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - ELASTIC_PASSWORD=raed
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      - ecommerce-net
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+
+  # Logstash Service
+  logstash:
+    container_name: ecommerce-logstash
+    image: docker.elastic.co/logstash/logstash:7.17.10
+    ports:
+      - "5044:5044"
+      - "9600:9600"
+    volumes:
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    environment:
+      - LOGSTASH_JAVA_OPTS=-Xmx1g -Xms1g
+      - ELASTICSEARCH_URL=http://localhost:9200
+      - KAFKA_HOST=localhost:29092
+      - KAFKA_HOST=localhost:39092
+    depends_on:
+      - kafka-1
+      - kafka-2
+      - elasticsearch
+    networks:
+      - ecommerce-net
+
+  # Kibana Service
+  kibana:
+    container_name: ecommerce-kibana
+    image: docker.elastic.co/kibana/kibana:8.10.1
+    environment:
+      - ELASTICSEARCH_URL=http://localhost:9200
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_PASSWORD=raed
+    ports:
+      - 5601:5601
+    networks:
+      - ecommerce-net
+    depends_on:
+      - elasticsearch
+
+volumes:
+  zookeeper-1-data:
+  zookeeper-2-data:
+  zookeeper-3-data:
+  kafka-1-data:
+  kafka-2-data:
+  elasticsearch-data:
+
+networks:
+  ecommerce-net:
+    driver: bridge
+
+  # mysql:
+  #   container_name: ecommerce-mysql
+  #   image: mysql:latest
+  #   volumes:
+  #     - "./.mysql-data/db:/var/lib/mysql"
+  #   restart: always
+  #   ports:
+  #     - 3306:3306
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: 1234
+  #     MYSQL_DATABASE: angMetal
+  #     MYSQL_USER: admin
+  #     MYSQL_PASSWORD: 1234
