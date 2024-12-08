@@ -27,6 +27,6 @@ public class Report {
 
     // Many reports belong to one project
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "projectID", nullable = false)
+    @JoinColumn(name = "project_id", nullable = false)
     private Projet projet;
 }

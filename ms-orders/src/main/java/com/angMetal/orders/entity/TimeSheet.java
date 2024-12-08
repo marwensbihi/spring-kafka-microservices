@@ -13,6 +13,7 @@ public class TimeSheet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "timesheet_id")
     private Long id;
 
     private int heuresTravaillees;
@@ -21,7 +22,7 @@ public class TimeSheet {
     private Date date;
 
     // Many timesheets belong to one project
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "projectID", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "projet_id")
     private Projet projet;
 }

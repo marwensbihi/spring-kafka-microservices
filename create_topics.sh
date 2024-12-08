@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Kafka containers
-KAFKA_CONTAINERS=("ecommerce-kafka-1" "ecommerce-kafka-2")
+KAFKA_CONTAINERS=("kafka-1" "kafka-2")
 
 # Topics to create
 TOPICS=("facture-events" "payment-events" "stock-events")

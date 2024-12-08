@@ -9,11 +9,13 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-@Entity
-@Table(name = "client")
+
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "client")
 public class Client {
 
     @Id
@@ -47,4 +49,13 @@ public class Client {
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Projet> projets;
 
+    public Client(Long clientID, String name, String adresse, String email, String numeroTel, TypeClient typeClient) {
+        this.clientID = clientID;
+        this.name = name;
+        this.adresse = adresse;
+        this.email = email;
+        this.numeroTel = numeroTel;
+        this.typeClient = typeClient;
+
+    }
 }

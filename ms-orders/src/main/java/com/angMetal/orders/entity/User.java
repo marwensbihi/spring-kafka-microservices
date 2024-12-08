@@ -1,76 +1,54 @@
+
 package com.angMetal.orders.entity;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonManagedReference;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Size;
-import java.time.Instant;
+import javax.validation.constraints.Pattern;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-
 @Entity
-@Table(name = "users",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "username"),
-                @UniqueConstraint(columnNames = "email")
-        })
-@Data
+@Table(name = "users")
 @NoArgsConstructor
-@AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@Getter
+@Setter
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-generate ID for User
     private Long id;
-
-    @Size(max = 24)
+    @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "Username should not contain any special characters")
     private String username;
-
-    @Size(max = 50)
-    @Email
     private String email;
-
-    @JsonIgnore
-    @Size(min = 6, max = 256)
     private String password;
-
     private String firstName;
-
     private String lastName;
-
     private String address;
-
-    @Column(unique = true, nullable = false)
+    @Pattern(regexp = "^\\+?[0-9]*$", message = "Invalid phone number")
     private String phoneNumber;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    @CreationTimestamp
-    private Instant createdAt;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)  // LAZY load for better performance
     @JoinColumn(name = "company_id")
     private Company company;
 
+    @JsonManagedReference
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
+    @JoinTable(name = "user_roles",  // Junction table between User and Role
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
-
-
 
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
     }
-
 }

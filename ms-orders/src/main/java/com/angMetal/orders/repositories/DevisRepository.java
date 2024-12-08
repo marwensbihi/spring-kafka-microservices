@@ -1,4 +1,8 @@
 package com.angMetal.orders.repositories;
 
-public interface DevisController {
+import com.angMetal.orders.entity.Devis;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface DevisRepository extends JpaRepository<Devis, Long> {
+
 }

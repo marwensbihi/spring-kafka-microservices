@@ -3,9 +3,9 @@ package com.angMetal.orders.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,10 +15,11 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
     private Long productID;
 
     @Column(nullable = false)
-    private String nom;
+    private String name;
 
     private String description;
 
@@ -39,4 +40,13 @@ public class Product {
 
     @ManyToMany(mappedBy = "products", cascade = CascadeType.ALL)
     private List<FactureVente> factureVentes;
+
+    public Product(Long productID, String name, String description, Double prixUnitaire, int quantiteEnStock, Double taxe) {
+        this.productID = productID;
+        this.name = name;
+        this.description = description;
+        this.prixUnitaire = prixUnitaire;
+        this.quantiteEnStock = quantiteEnStock;
+        this.taxe = taxe;
+    }
 }

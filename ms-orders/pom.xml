@@ -76,6 +76,11 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>7.0.1.Final</version>  <!-- Use the latest stable version -->
+        </dependency>
         <!-- Spring Security (For securing the application) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

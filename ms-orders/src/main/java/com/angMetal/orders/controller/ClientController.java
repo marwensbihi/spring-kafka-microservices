@@ -1,6 +1,7 @@
 package com.angMetal.orders.controller;
 
 import com.angMetal.orders.entity.Client;
+import com.angMetal.orders.entity.Company;
 import com.angMetal.orders.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,17 +12,23 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/clients")
+@RequestMapping("/clients")
 public class ClientController {
 
     @Autowired
     private ClientService clientService;
 
-    // Create or Update Client
+    // Create Client
     @PostMapping
     public ResponseEntity<Client> createOrUpdateClient(@RequestBody Client client) {
         Client savedClient = clientService.saveClient(client);
         return new ResponseEntity<>(savedClient, HttpStatus.CREATED);
+    }
+
+    //  Update Client
+    @PutMapping("/{id}")
+    public Client updateClient(@PathVariable Long id, @RequestBody Client client) {
+        return clientService.updateClient(id, client);
     }
 
     // Get all Clients

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/products")
 public class ProductController {
 
     @Autowired
@@ -19,7 +19,14 @@ public class ProductController {
 
     // Create or Update Product
     @PostMapping
-    public ResponseEntity<Product> createOrUpdateProduct(@RequestBody Product product) {
+    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+        Product savedProduct = productService.saveProduct(product);
+        return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+    }
+
+    // Create or Update Product
+    @PostMapping("/{id}")
+    public ResponseEntity<Product> UpdateProduct(@PathVariable("id") Long productId ,@RequestBody Product product) {
         Product savedProduct = productService.saveProduct(product);
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }

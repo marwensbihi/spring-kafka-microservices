@@ -9,13 +9,12 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 
-
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "project")
 public class Projet {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -45,7 +44,6 @@ public class Projet {
     private List<Report> reports;
 
     @ManyToOne
-    @JoinColumn(name = "company_id") // Foreign key in the "projet" table
+    @JoinColumn(name = "company_id")
     private Company company;
-
 }

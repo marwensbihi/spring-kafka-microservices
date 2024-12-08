@@ -6,9 +6,7 @@ import lombok.Setter;
 import javax.validation.constraints.*;
 import java.util.Set;
 
-/**
- * @author Rayen Boulehmi
- */
+
 @Getter
 @Setter
 public class SignupRequest {

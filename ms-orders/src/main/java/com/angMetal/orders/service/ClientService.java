@@ -1,6 +1,7 @@
 package com.angMetal.orders.service;
 
 import com.angMetal.orders.entity.Client;
+import com.angMetal.orders.entity.Company;
 import com.angMetal.orders.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,4 +34,22 @@ public class ClientService {
     public void deleteClient(Long clientId) {
         clientRepository.deleteById(clientId);
     }
+
+
+
+    public Client updateClient(Long id, Client client) {
+        // Fetch the existing client from the repository
+        Client existingClient = clientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Client with ID " + id + " not found"));
+
+        // Update the properties of the existing client
+        existingClient.setName(client.getName());
+        existingClient.setAdresse(client.getAdresse());
+        existingClient.setEmail(client.getEmail());
+        existingClient.setNumeroTel(client.getNumeroTel());
+        existingClient.setTypeClient(client.getTypeClient());
+        // Save the updated client back to the repository
+        return clientRepository.save(existingClient);
+    }
+
 }

@@ -6,6 +6,7 @@ import com.angMetal.orders.security.jwt.AuthEntryPointJwt;
 import com.angMetal.orders.security.jwt.AuthTokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -61,12 +62,36 @@ public class WebSecurityConfig {
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/api/v1/auth/**").permitAll()
-                .antMatchers("**").permitAll()
-                .anyRequest().authenticated();
+                // Allow all OPTIONS requests
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                // Public endpoints
+                .antMatchers("/auth/**").permitAll()
+                .antMatchers("/users/**").permitAll()
+                .antMatchers("/public/**").permitAll()
+
+                // Allow Swagger endpoints without authentication
+                .antMatchers(
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html",
+                        "/swagger-resources/**",
+                        "/webjars/**").permitAll()
+                // Secured endpoints
+                .antMatchers("/companies/**").hasRole("ADMIN")
+                .antMatchers("/fournisseurs/**").hasRole("ADMIN")
+                .antMatchers("/banques/**").hasRole("ADMIN")
+                .antMatchers("/api/v1/factures/**").hasRole("ADMIN")
+                .antMatchers("/api/v1/products/**").access("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+                .antMatchers("/api/v1/clients/**").hasRole("ADMIN")
+                .antMatchers("/api/v1/reports/**").access("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+                .anyRequest().authenticated(); // All other requests require authentication
+
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
+
+
 }

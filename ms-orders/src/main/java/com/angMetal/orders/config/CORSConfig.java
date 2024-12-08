@@ -7,22 +7,27 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.List;
+
 
 @Configuration
 public class CORSConfig {
+
     @Value("${server.allowed-origin}")
-    String allowedOrigin;
+    private String allowedOrigin;
 
     @Value("${server.max-request-age}")
-    Long maxRequestAge;
+    private Long maxRequestAge;
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin(allowedOrigin);
+
+        // Use setAllowedOriginPatterns for more flexibility or add specific allowed origins.
+        configuration.setAllowedOriginPatterns(List.of(allowedOrigin));
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
-        configuration.setAllowCredentials(true);
+        configuration.setAllowCredentials(true); // Ensure this is compatible with your origin setup
         configuration.setMaxAge(maxRequestAge);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

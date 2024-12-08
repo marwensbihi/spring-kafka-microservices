@@ -1,19 +1,21 @@
 package com.angMetal.orders.payloads.request;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import javax.validation.constraints.Pattern;
+import java.util.Set;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Size;
-
-
-@Getter
+@Data
+@AllArgsConstructor
 public class UserDTO {
-    @Size(min = 6, max = 24)
+    @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "Username should not contain any special characters")
+    private Long id;
     private String username;
 
-    @Email
+    private String firstName;
+    private String lastName;
+    private String address;
     private String email;
-
-    @Size(min = 6, max = 64)
-    private String password;
+    private String phoneNumber;
+    private Set<String> roles; // Include roles as a Set of Strings
 }

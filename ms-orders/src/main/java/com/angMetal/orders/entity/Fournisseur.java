@@ -18,10 +18,11 @@ public class Fournisseur {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "fournisseur_id")
     private Long fournisseurID;
 
     @Column(nullable = false)
-    private String nom;
+    private String name;
 
     private String adresse;
 

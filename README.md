@@ -26,6 +26,10 @@ for our environment.
 3. kafka-cluster-2  
 4. zookeeper-1  
 5. zookeeper-2  
+6. zookeeper-3  
+7. logstash  
+8. kibana  
+9. elasticSearch  
 
 run this command in the root directory
 ```shell

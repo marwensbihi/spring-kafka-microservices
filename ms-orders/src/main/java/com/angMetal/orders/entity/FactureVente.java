@@ -1,6 +1,5 @@
 package com.angMetal.orders.entity;
 
-
 import com.angMetal.orders.enums.StatusFacture;
 import lombok.*;
 
@@ -8,19 +7,17 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
-
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Facture_vente")
+@Table(name = "facture_vente")
 public class FactureVente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "factureID")
+    @Column(name = "facture_id")
     private Long factureID;
 
     @Column(name = "dateEmission", nullable = false)
@@ -45,14 +42,11 @@ public class FactureVente {
     @JoinColumn(name = "clientID")
     private Client client;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "facture_products",
-            joinColumns = @JoinColumn(name = "factureID"),
-            inverseJoinColumns = @JoinColumn(name = "productID")
+            name = "facture_vente_product", // This is the join table
+            joinColumns = @JoinColumn(name = "facture_id"), // Foreign key for FactureVente
+            inverseJoinColumns = @JoinColumn(name = "product_id") // Foreign key for Product
     )
-    private List<Product> products;
-
-  //  @OneToMany(mappedBy = "Facturevente")
-   // private Set<Transaction> transactions;
+    private List<Product> products; // List of associated products
 }

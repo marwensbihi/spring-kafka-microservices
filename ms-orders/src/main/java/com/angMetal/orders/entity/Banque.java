@@ -1,5 +1,6 @@
 package com.angMetal.orders.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,9 @@ public class Banque {
     @Column(name = "compte_id")
     private Long compteID;
 
+    @Column(name = "name", nullable = false)
+    private String name;
+
     @Column(name = "solde_initial", nullable = false)
     private Double soldeInitial;
 
@@ -28,5 +32,8 @@ public class Banque {
 
     @OneToOne
     @JoinColumn(name = "compte_id")
+    @JsonIgnore
     private Company company;
+
+
 }

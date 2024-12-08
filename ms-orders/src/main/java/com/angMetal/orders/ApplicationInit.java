@@ -16,61 +16,82 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 
-
 @Component
 public class ApplicationInit {
+
     private static final Logger logger = LoggerFactory.getLogger(ApplicationInit.class);
 
     @Autowired
-    RoleRepository roleRepository;
+    private RoleRepository roleRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Value("${application.admin.username}")
-    String adminUsername;
+    private String adminUsername;
 
     @Value("${application.admin.email}")
-    String adminEmail;
+    private String adminEmail;
 
     @Value("${application.admin.password}")
-    String adminPassword;
+    private String adminPassword;
 
     @Value("${application.admin.create}")
-    boolean createAdmin;
+    private boolean createAdmin;
 
     @Bean
     InitializingBean init() {
         return () -> {
-            // --------------------- ROLES ----------------------
-            if (!roleRepository.existsByName(ERole.ROLE_ADMIN)) {
-                logger.info("Saving role: {}", ERole.ROLE_ADMIN);
-                roleRepository.save(new Role(ERole.ROLE_ADMIN));
-            }
-            if (!roleRepository.existsByName(ERole.ROLE_USER)) {
-                logger.info("Saving role: {}", ERole.ROLE_USER);
-                roleRepository.save(new Role(ERole.ROLE_USER));
-            }
-            if (createAdmin && !userRepository.existsByUsername(adminUsername)) {
-                logger.info("Creating Admin Account");
-                logger.info("Username: {}", adminUsername);
-                logger.info("Email: {}", adminEmail);
-                logger.info("Password: {}", adminPassword);
+            // Create roles if they do not exist
+            createRoleIfNotExists(ERole.ROLE_ADMIN);
+            createRoleIfNotExists(ERole.ROLE_COMPUTABLE);
+            createRoleIfNotExists(ERole.ROLE_EMPLOYEE);
 
-                Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN);
+            // Create admin user if the user does not exist
+            if (createAdmin) {
+                createAdminUserIfNotExists();
+            }
+        };
+    }
+
+    private void createRoleIfNotExists(ERole role) {
+        if (!roleRepository.existsByName(role)) {
+            logger.info("Saving role: {}", role);
+            roleRepository.save(new Role(role));
+        }
+    }
+
+    private void createAdminUserIfNotExists() {
+        // Check if the admin user already exists
+        if (!userRepository.existsByUsername(adminUsername) && !userRepository.existsByEmail(adminEmail)) {
+            logger.info("Creating Admin Account");
+            logger.info("Username: {}", adminUsername);
+            logger.info("Email: {}", adminEmail);
+            logger.info("Password: {}", adminPassword);
+
+            Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN);
+            if (adminRole != null) {
                 User adminUser = new User();
-
                 adminUser.setUsername(adminUsername);
                 adminUser.setEmail(adminEmail);
                 adminUser.setPassword(passwordEncoder.encode(adminPassword));
 
+                adminUser.setFirstName("Admin");
+                adminUser.setLastName("raedsouli");
+                adminUser.setAddress("Admin Address");
+                adminUser.setPhoneNumber("55 555 555");
                 adminUser.setRoles(Collections.singleton(adminRole));
 
                 userRepository.save(adminUser);
+                logger.info("Admin account created successfully");
+            } else {
+                logger.error("Admin role not found, cannot create admin user");
             }
-        };
+        } else {
+            logger.info("Admin user already exists. Skipping creation.");
+        }
     }
 }

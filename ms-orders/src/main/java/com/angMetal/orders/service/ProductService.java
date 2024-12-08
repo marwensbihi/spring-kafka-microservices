@@ -31,7 +31,7 @@ public class ProductService {
 
     // Get Product by Name
     public List<Product> getProductById(String name) {
-        return productRepository.findByNom(name);
+        return productRepository.findByName(name);
     }
 
     // Delete Product by ID

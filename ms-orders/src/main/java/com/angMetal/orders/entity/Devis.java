@@ -15,12 +15,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "devis")
 public class Devis {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "quoteID")
-    private Integer quoteID;
+    @Column(name = "devis_id")
+    private Integer devisId;
 
     @Column(name = "dateCreation", nullable = false)
     @Temporal(TemporalType.DATE)
@@ -44,11 +45,12 @@ public class Devis {
     @JoinColumn(name = "clientID", nullable = false)
     private Client client;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
-            name = "devis_products",
-            joinColumns = @JoinColumn(name = "quoteID"),
-            inverseJoinColumns = @JoinColumn(name = "productID")
+            name = "devis_products", // join table name
+            joinColumns = @JoinColumn(name = "devis_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private List<Product> products;
+
 }

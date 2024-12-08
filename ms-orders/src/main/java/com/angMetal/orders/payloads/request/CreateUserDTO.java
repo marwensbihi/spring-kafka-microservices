@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import java.util.Set;
 
-/**
- * @author Rayen Boulehmi
- */
+
 
 @Getter
 public class CreateUserDTO {

@@ -14,6 +14,7 @@ public class FactureEvent {
     private Long factureId;        // Unique facture ID
     private Long customerId;      // ID of the customer
     private Long fournisseurId;      // ID of the Fourniseur
+    private Long banqueId;          // ID of the Banque
     private Long productId;       // ID of the product
     private int productCount;     // Quantity of the product
     private Double amount;            // Total price

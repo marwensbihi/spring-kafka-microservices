@@ -5,6 +5,7 @@ import lombok.Getter;
 import javax.validation.constraints.NotNull;
 
 
+
 @Getter
 public class UpdatePasswordDTO {
     @NotNull

@@ -11,9 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-/**
- * @author Majd Selmi
- */
+
 @Component
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);

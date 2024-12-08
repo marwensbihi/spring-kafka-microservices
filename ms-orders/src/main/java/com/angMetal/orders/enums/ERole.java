@@ -1,7 +1,7 @@
 package com.angMetal.orders.enums;
 
 public enum ERole {
-    ROLE_USER,
+    ROLE_COMPUTABLE,
     ROLE_ADMIN,
     ROLE_EMPLOYEE,
 }

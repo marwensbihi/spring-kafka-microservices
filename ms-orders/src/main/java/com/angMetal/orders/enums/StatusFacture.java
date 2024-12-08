@@ -6,5 +6,4 @@ public enum StatusFacture {
         SENT,
         PAID,
 
-
 }

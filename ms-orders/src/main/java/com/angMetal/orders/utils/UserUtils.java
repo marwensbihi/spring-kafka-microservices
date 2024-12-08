@@ -8,9 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * @author Majd Selmi
- */
+
 @Component
 public class UserUtils {
     @Autowired
