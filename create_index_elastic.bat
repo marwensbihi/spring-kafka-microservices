@@ -2,7 +2,7 @@
 
 :: Set Elasticsearch credentials
 set USERNAME=elastic
-set PASSWORD=raed
+set PASSWORD=adem
 set URL=localhost:9200
 
 :: Create the product_index

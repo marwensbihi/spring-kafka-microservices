@@ -35,6 +35,8 @@ public class PaymentConsumer {
         logger.info("Received payment event: {}", factureEvent);
 
         try {
+            logger.info("Received message to payment: {}", factureEvent.toString());
+
             // Process the FactureEvent object directly
             TransactionMySQL transactionMySQL = createTransactionFromFactureEvent(factureEvent);
 

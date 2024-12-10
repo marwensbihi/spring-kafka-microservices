@@ -26,9 +26,6 @@ public class KafkaConfig {
     @Value("${kafka.bootstrap.servers:127.0.0.1:39092,127.0.0.1:29092}")
     private String bootstrapServers;
 
-    @Value("${kafka.topic.facture-events}")
-    private String factureEventsTopic;
-
     @Value("${kafka.topic.payment-events}")
     private String paymentEventsTopic;
 
@@ -64,12 +61,6 @@ public class KafkaConfig {
         Map<String, Object> configs = new HashMap<>();
         configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         return new KafkaAdmin(configs);
-    }
-
-    // Defining Kafka Topics
-    @Bean
-    public NewTopic factureEvents() {
-        return new NewTopic(factureEventsTopic, 3, (short) 3);
     }
 
     @Bean

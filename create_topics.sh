@@ -4,7 +4,7 @@
 KAFKA_CONTAINERS=("kafka-1" "kafka-2")
 
 # Topics to create
-TOPICS=("facture-events" "payment-events" "stock-events")
+TOPICS=("payment-events" "stock-events")
 
 # Kafka CLI location
 KAFKA_CLI="/bin/kafka-topics"

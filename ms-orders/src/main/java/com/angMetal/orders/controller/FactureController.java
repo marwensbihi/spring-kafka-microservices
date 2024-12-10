@@ -20,6 +20,7 @@ public class FactureController {
 
     /**
      * Endpoint to create a new facture vente.
+     *
      * @param factureVente FactureVente object.
      * @return The created FactureVente.
      */
@@ -28,22 +29,12 @@ public class FactureController {
         // Save factureVente in database
         FactureVente savedFacture = factureService.createFactureVente(factureVente);
 
-        // Create FactureEvent for Kafka message
-        FactureEvent factureEvent = FactureEvent.builder()
-                .factureId(savedFacture.getFactureID())
-                .customerId(savedFacture.getClient().getClientID())
-                .type("VENTE")
-                .amount(savedFacture.getMontantTotal())
-                .build();
-
-        // Send message to Kafka
-        kafkaProducerService.sendFactureEvent(factureEvent);
-
         return savedFacture;
     }
 
     /**
      * Endpoint to create a new facture achat.
+     *
      * @param factureAchat FactureAchat object.
      * @return The created FactureAchat.
      */
@@ -51,17 +42,6 @@ public class FactureController {
     public FactureAchat createFactureAchat(@RequestBody @Valid FactureAchat factureAchat) {
         // Save factureAchat in database
         FactureAchat savedFacture = factureService.createAchatFacture(factureAchat);
-
-        // Create FactureEvent for Kafka message
-        FactureEvent factureEvent = FactureEvent.builder()
-                .factureId(savedFacture.getBillID())
-                .fournisseurId(savedFacture.getFournisseur().getFournisseurID())
-                .type("ACHAT")
-                .amount(savedFacture.getMontantTotal())
-                .build();
-
-        // Send message to Kafka
-        kafkaProducerService.sendFactureEvent(factureEvent);
 
         return savedFacture;
     }

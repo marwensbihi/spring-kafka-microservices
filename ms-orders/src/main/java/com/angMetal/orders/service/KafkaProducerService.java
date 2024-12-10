@@ -1,19 +1,18 @@
 package com.angMetal.orders.service;
 
-import com.angMetal.orders.config.KafkaConfig;
 import models.FactureEvent;
 import lombok.RequiredArgsConstructor;
-import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+@Deprecated
 @Service
 @RequiredArgsConstructor
 public class KafkaProducerService {
 
     private final KafkaTemplate<String, FactureEvent> kafkaTemplate;
 
-    private static final String FACTURE_TOPIC = "facture-topic";
+    private static final String FACTURE_EVENTS = "facture-events";
 
     /**
      * Send a FactureEvent to Kafka using KafkaTemplate.
@@ -22,9 +21,9 @@ public class KafkaProducerService {
     public void sendFactureEvent(FactureEvent factureEvent) {
         try {
             // Send the record asynchronously using KafkaTemplate
-            kafkaTemplate.send(FACTURE_TOPIC, factureEvent.getFactureId().toString(), factureEvent)
+            kafkaTemplate.send(FACTURE_EVENTS, factureEvent.getFactureId().toString(), factureEvent)
                     .addCallback(result -> {
-                        System.out.println("Message sent successfully to Kafka topic: " + FACTURE_TOPIC);
+                        System.out.println("Message sent successfully to Kafka topic: " + FACTURE_EVENTS);
                     }, ex -> {
                         ex.printStackTrace();
                     });
@@ -39,9 +38,9 @@ public class KafkaProducerService {
      * @param factureEvent The facture event to be sent.
      */
     public void sendFactureEventWithTemplate(FactureEvent factureEvent) {
-        kafkaTemplate.send(FACTURE_TOPIC, factureEvent.getFactureId().toString(), factureEvent)
+        kafkaTemplate.send(FACTURE_EVENTS, factureEvent.getFactureId().toString(), factureEvent)
                 .addCallback(result -> {
-                    System.out.println("Message sent successfully to Kafka topic: " + FACTURE_TOPIC);
+                    System.out.println("Message sent successfully to Kafka topic: " + FACTURE_EVENTS);
                 }, ex -> {
                     ex.printStackTrace();
                 });

@@ -4,6 +4,7 @@ import com.angMetal.stock.service.StockService;
 import models.FactureEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,8 +26,9 @@ public class StockConsumer {
      * @param factureEvent FactureEvent containing the stock update information
      */
     @KafkaListener(topics = "stock-events", groupId = "ms-stock-group")
-    public void listenToFactureEvent(FactureEvent factureEvent) {
+    public void listenToFactureEvent(@Payload FactureEvent factureEvent) {
         try {
+            logger.info("Received message to stock: {}", factureEvent.toString());
             // Delegate the processing to the StockService
             stockService.processStockUpdate(factureEvent);
         } catch (Exception e) {

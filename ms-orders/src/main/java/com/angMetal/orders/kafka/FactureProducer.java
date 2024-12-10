@@ -11,8 +11,6 @@ public class FactureProducer {
 
     private final KafkaTemplate<String, FactureEvent> kafkaTemplate;
     private final KafkaTemplate<String, FactureEvent> paymentKafkaTemplate; // KafkaTemplate for PaymentEvent
-
-    private static final String FACTURE_EVENTS = "facture-events";
     private static final String STOCK_TOPIC = "stock-events";
     private static final String PAYMENT_TOPIC = "payment-events"; // New payment topic
 
@@ -21,12 +19,6 @@ public class FactureProducer {
      * @param factureEvent The facture event containing facture details.
      */
     public void sendFactureEvent(FactureEvent factureEvent) {
-        kafkaTemplate.send(FACTURE_EVENTS, factureEvent)
-                .addCallback(
-                        result -> System.out.println("Facture event sent successfully to topic: " + FACTURE_EVENTS),
-                        ex -> System.err.println("Error sending facture event to topic: " + FACTURE_EVENTS)
-                );
-
         // Send to the stock-events topic
         sendStockEvent(factureEvent);
         sendPaymentEvent(factureEvent);
