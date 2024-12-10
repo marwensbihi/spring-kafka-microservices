@@ -35,4 +35,5 @@ public class Fournisseur {
     @OneToMany(mappedBy = "fournisseur", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<FactureAchat> factureAchats;
 
+
 }

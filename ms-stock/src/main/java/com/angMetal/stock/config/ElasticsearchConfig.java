@@ -15,7 +15,7 @@ public class ElasticsearchConfig extends AbstractElasticsearchConfiguration {
     public RestHighLevelClient elasticsearchClient() {
         final ClientConfiguration clientConfiguration = ClientConfiguration.builder()
                 .connectedTo("localhost:9200")
-                .withBasicAuth("elastic", "changeme")
+                .withBasicAuth("elastic", "adem")
                 .build();
         return RestClients.create(clientConfiguration).rest();
     }

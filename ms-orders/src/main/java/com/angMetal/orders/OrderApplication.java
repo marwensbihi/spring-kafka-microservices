@@ -11,10 +11,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAsync
 @EnableKafkaStreams
 
-/*@SpringBootApplication(scanBasePackages = "com.angMetal.orders")
+
 @EnableJpaRepositories(basePackages = "com.angMetal.orders.repositories")
-@EntityScan(basePackages = "com.angMetal.orders.entity")*/
-@SpringBootApplication
+@EntityScan(basePackages = "com.angMetal.orders.entity")
+@SpringBootApplication(scanBasePackages = "com.angMetal.orders")
 public class OrderApplication {
 
     public static void main(String[] args) {

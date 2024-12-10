@@ -1,9 +1,9 @@
 package com.angMetal.payment.kafka;
 
-import com.angMetal.payment.entity.TransactionElastic;
 import com.angMetal.payment.entity.TransactionMySQL;
 import com.angMetal.payment.service.ElasticsearchServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import models.FactureEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -28,38 +28,37 @@ public class PaymentConsumer {
     /**
      * Kafka Listener method for processing payment-related messages.
      *
-     * @param message the incoming message from the Kafka topic.
+     * @param factureEvent the incoming message from the Kafka topic.
      */
     @KafkaListener(topics = "payment-events", groupId = "ms-payment-group")
-    public void listenPaymentEvents(String message) {
-        logger.info("Received payment event: {}", message);
+    public void listenPaymentEvents(FactureEvent factureEvent) {
+        logger.info("Received payment event: {}", factureEvent);
 
         try {
-            // Parse and process the message
-            TransactionMySQL transactionMySQL = createTransactionFromMessage(message);
+            // Process the FactureEvent object directly
+            TransactionMySQL transactionMySQL = createTransactionFromFactureEvent(factureEvent);
 
             // Save to MySQL and Elasticsearch
             elasticsearchServiceImpl.saveTransaction(transactionMySQL);
 
             // Log the transaction saved and indexed
             logger.info("Transaction saved and indexed: {}", transactionMySQL);
-
         } catch (Exception e) {
-            logger.error("Error processing payment event: {}", message, e);
+            logger.error("Error processing payment event: {}", factureEvent, e); // Use factureEvent here
         }
     }
 
     /**
-     * Parse the Kafka message and create a Transaction entity.
+     * Create a Transaction entity from the FactureEvent.
      *
-     * @param message the raw message.
+     * @param factureEvent the received payment event.
      * @return a populated Transaction entity for MySQL.
      */
-    private TransactionMySQL createTransactionFromMessage(String message) {
-        try {
-            return objectMapper.readValue(message, TransactionMySQL.class);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to parse message into TransactionMySQL entity", e);
-        }
+    private TransactionMySQL createTransactionFromFactureEvent(FactureEvent factureEvent) {
+
+        TransactionMySQL transactionMySQL = new TransactionMySQL();
+        transactionMySQL.setMontant(factureEvent.getAmount());
+        // ... (map other relevant fields)
+        return transactionMySQL;
     }
 }

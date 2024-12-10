@@ -1,14 +1,8 @@
 package com.angMetal.orders.config;
 
-import com.angMetal.orders.entity.Banque;
-import com.angMetal.orders.entity.Client;
-import com.angMetal.orders.entity.Company;
-import com.angMetal.orders.entity.Product;
+import com.angMetal.orders.entity.*;
 import com.angMetal.orders.enums.TypeClient;
-import com.angMetal.orders.repositories.ClientRepository;
-import com.angMetal.orders.repositories.CompanyRepository;
-import com.angMetal.orders.repositories.BanqueRepository;
-import com.angMetal.orders.repositories.ProductRepository;
+import com.angMetal.orders.repositories.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +31,9 @@ public class DataInitializer {
     @Autowired
     private ClientRepository clientRepository;
 
+    @Autowired
+    private FournisseurRepository fournisseurRepository;
+
     @Value("${application.createDummyCompanies}")
     private boolean createDummyCompanies;
 
@@ -48,6 +45,9 @@ public class DataInitializer {
 
     @Value("${application.createDummyClients}")
     private boolean createDummyClients;
+
+    @Value("${application.createDummyFournisseurs}")
+    private boolean createDummyFournisseurs;
 
     @PostConstruct
     private void init() {
@@ -63,6 +63,9 @@ public class DataInitializer {
         }
         if   (createDummyClients){
             createDummyClientsIfNeeded();
+        }
+        if   (createDummyFournisseurs){
+            createDummyFournisseursIfNeeded();
         }
 
     }
@@ -212,5 +215,20 @@ public class DataInitializer {
             logger.info("Products already exist, skipping insertion.");
         }
     }
+    @Transactional
+    public void createDummyFournisseursIfNeeded() {
+        if (fournisseurRepository.count() == 0) {
+            List<Fournisseur> fournisseurs = Arrays.asList(
+                    new Fournisseur(null, "ABC Supplies", "123 Main St, Cityville", "contact@abcsupplies.com", "555-1234", Arrays.asList()),
+                    new Fournisseur(null, "XYZ Enterprises", "456 Oak Rd, Villagetown", "sales@xyzenterprises.com", "555-5678", Arrays.asList()),
+                    new Fournisseur(null, "Tech Innovators", "789 Maple Ave, Techcity", "info@techinnovators.com", "555-9876", Arrays.asList()),
+                    new Fournisseur(null, "Green Goods", "101 Green St, Greenfield", "support@greengoods.com", "555-1122", Arrays.asList())
+            );
 
+            fournisseurRepository.saveAll(fournisseurs);
+            System.out.println("Inserted dummy fournisseurs into the database.");
+        } else {
+            System.out.println("Fournisseurs already exist, skipping insertion.");
+        }
+    }
 }

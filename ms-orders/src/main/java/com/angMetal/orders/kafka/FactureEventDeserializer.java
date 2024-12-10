@@ -1,45 +1,37 @@
 package com.angMetal.orders.kafka;
 
 import models.FactureEvent;
-import org.apache.kafka.common.serialization.Deserializer;
-import org.apache.kafka.common.serialization.Serializer;
-import org.apache.kafka.common.serialization.Serdes;
-
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.kafka.streams.errors.StreamsException;
+import org.apache.kafka.common.serialization.Deserializer;
 
-public class FactureEventSerde extends Serdes.WrapperSerde<FactureEvent> {
+import java.util.Map;
 
-    public FactureEventSerde() {
-        super(new FactureEventSerializer(), new FactureEventDeserializer());
+public class FactureEventDeserializer implements Deserializer<FactureEvent> {
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Override
+    public void configure(Map<String, ?> configs, boolean isKey) {
+        // Configuration logic if needed
     }
 
-    public static class FactureEventSerializer implements Serializer<FactureEvent> {
-
-        private final ObjectMapper objectMapper = new ObjectMapper();
-
-        @Override
-        public byte[] serialize(String topic, FactureEvent data) {
-            try {
-                return objectMapper.writeValueAsBytes(data);
-            } catch (Exception e) {
-                throw new StreamsException("Error serializing FactureEvent", e);
-            }
+    @Override
+    public FactureEvent deserialize(String topic, byte[] data) {
+        if (data == null) {
+            System.err.println("Cannot deserialize null data for topic: " + topic);
+            return null;
+        }
+        try {
+            return objectMapper.readValue(data, FactureEvent.class);
+        } catch (Exception e) {
+            System.err.println("Error deserializing FactureEvent for topic: " + topic);
+            e.printStackTrace();
+            throw new RuntimeException("Error deserializing FactureEvent", e);
         }
     }
 
-    public static class FactureEventDeserializer implements Deserializer<FactureEvent> {
-
-        private final ObjectMapper objectMapper = new ObjectMapper();
-
-        @Override
-        public FactureEvent deserialize(String topic, byte[] data) {
-            try {
-                return objectMapper.readValue(data, FactureEvent.class);
-            } catch (Exception e) {
-                throw new StreamsException("Error deserializing FactureEvent", e);
-            }
-        }
+    @Override
+    public void close() {
+        // No resources to close in this case
     }
 }

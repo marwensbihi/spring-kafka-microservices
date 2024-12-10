@@ -1,4 +1,7 @@
 package com.angMetal.orders.repositories;
 
-public interface TimeSheetRepository {
+import com.angMetal.orders.entity.TimeSheet;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface TimeSheetRepository extends JpaRepository<TimeSheet,Long> {
 }

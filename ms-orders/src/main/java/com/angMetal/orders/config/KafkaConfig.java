@@ -59,12 +59,12 @@ public class KafkaConfig {
 
 
     // Kafka Admin Bean for managing Kafka topics
-   /* @Bean
+    @Bean
     public KafkaAdmin kafkaAdmin() {
         Map<String, Object> configs = new HashMap<>();
         configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         return new KafkaAdmin(configs);
-    }*/
+    }
 
     // Defining Kafka Topics
     @Bean

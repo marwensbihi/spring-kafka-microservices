@@ -7,6 +7,8 @@ import com.angMetal.payment.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class ElasticsearchServiceImpl {
 
@@ -26,6 +28,7 @@ public class ElasticsearchServiceImpl {
      * @param transactionMySQL the transaction entity to be saved in MySQL
      * @return the saved transaction entity in MySQL
      */
+    @Transactional  // Ensures MySQL transaction is rolled back if any exception occurs
     public TransactionMySQL saveTransaction(TransactionMySQL transactionMySQL) {
         // Save to MySQL
         TransactionMySQL savedTransaction = transactionRepository.save(transactionMySQL);
@@ -66,4 +69,5 @@ public class ElasticsearchServiceImpl {
     public void indexTransaction(TransactionElastic transaction) {
         elasticsearchRepository.save(transaction);
     }
+
 }

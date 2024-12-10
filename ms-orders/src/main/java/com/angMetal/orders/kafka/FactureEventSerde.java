@@ -1,4 +1,11 @@
 package com.angMetal.orders.kafka;
 
-public class FactureEventSerde {
+import models.FactureEvent;
+import org.apache.kafka.common.serialization.Serdes;
+
+
+public class FactureEventSerde extends Serdes.WrapperSerde<FactureEvent> {
+    public FactureEventSerde() {
+        super(new FactureEventSerializer(), new FactureEventDeserializer());
+    }
 }

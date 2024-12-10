@@ -55,7 +55,7 @@ public class FactureController {
         // Create FactureEvent for Kafka message
         FactureEvent factureEvent = FactureEvent.builder()
                 .factureId(savedFacture.getBillID())
-                .customerId(savedFacture.getFournisseur().getFournisseurID())
+                .fournisseurId(savedFacture.getFournisseur().getFournisseurID())
                 .type("ACHAT")
                 .amount(savedFacture.getMontantTotal())
                 .build();

@@ -1,5 +1,6 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,14 +12,46 @@ import lombok.NoArgsConstructor;
 @Builder
 public class FactureEvent {
 
-    private Long factureId;        // Unique facture ID
-    private Long customerId;      // ID of the customer
-    private Long fournisseurId;      // ID of the Fourniseur
-    private Long banqueId;          // ID of the Banque
-    private Long productId;       // ID of the product
-    private int productCount;     // Quantity of the product
-    private Double amount;            // Total price
-    private String type;          // Facture type (e.g., vente or achat)
-    private String source;        // Source of facture (e.g., system)
 
+    @JsonProperty("id")
+    private String id; // Elasticsearch requires an id field
+
+    @JsonProperty("factureId")
+    private Long factureId;
+
+    @JsonProperty("customerId")
+    private Long customerId;
+
+    @JsonProperty("fournisseurId")
+    private Long fournisseurId;
+
+    @JsonProperty("banqueId")
+    private Long banqueId;
+
+    @JsonProperty("productId")
+    private Long productId;
+
+    @JsonProperty("productCount")
+    private Integer productCount;
+
+    @JsonProperty("amount")
+    private Double amount;
+
+    @JsonProperty("type")
+    private String type;
+
+    @JsonProperty("source")
+    private String source;
+
+    // Getters and Setters
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    // Other getters and setters for the fields...
 }
