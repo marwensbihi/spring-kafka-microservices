@@ -64,8 +64,8 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    volumes:
-      - ./kafka-1-data:/var/lib/kafka/data
+    #volumes:
+      #- ./kafka-1-data:/var/lib/kafka/data
     restart: on-failure   
     networks:
       - ecommerce-net
@@ -86,8 +86,8 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    volumes:
-      - ./kafka-2-data:/var/lib/kafka/data
+    #volumes:
+      #- ./kafka-2-data:/var/lib/kafka/data
     restart: on-failure   
     networks:
       - ecommerce-net
@@ -99,7 +99,8 @@ services:
     environment:
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
-      - ELASTIC_PASSWORD=adem
+      - xpack.security.enabled=false
+      - xpack.security.http.ssl.enabled=false
     ports:
       - 9200:9200
       - 9300:9300
@@ -136,7 +137,6 @@ services:
     image: docker.elastic.co/kibana/kibana:8.10.1
     environment:
       - ELASTICSEARCH_URL=http://elasticsearch:9200
-      - ELASTICSEARCH_USERNAME=elastic
       - ELASTICSEARCH_PASSWORD=adem
     ports:
       - 5601:5601
@@ -164,8 +164,8 @@ volumes:
   zookeeper-1-data:
   zookeeper-2-data:
   zookeeper-3-data:
-  kafka-1-data:
-  kafka-2-data:
+  #kafka-1-data:
+  #kafka-2-data:
   elasticsearch-data:
   mysql-data:
 
